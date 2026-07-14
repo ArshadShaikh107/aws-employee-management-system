@@ -69,6 +69,22 @@ $result = $conn->query($sql);
 
 <?php } ?>
 
+<?php if(isset($_GET['updated'])){ ?>
+
+<div class="alert alert-info alert-dismissible fade show">
+
+<strong>Success!</strong> Employee updated successfully.
+
+<button
+type="button"
+class="btn-close"
+data-bs-dismiss="alert">
+</button>
+
+</div>
+
+<?php } ?>
+
 <div class="card shadow">
 
     <div class="card-body">

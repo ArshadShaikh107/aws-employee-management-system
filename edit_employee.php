@@ -9,9 +9,90 @@ if (!isset($_SESSION['user_id'])) {
 
 require_once "config/db.php";
 
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header("Location: index.php");
-    exit();
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $id = $_GET['id'];
+
+    $first_name = trim($_POST['first_name']);
+    $last_name = trim($_POST['last_name']);
+    $email = trim($_POST['email']);
+    $phone = trim($_POST['phone']);
+    $department_id = $_POST['department_id'];
+    $designation_id = $_POST['designation_id'];
+    $salary = $_POST['salary'];
+    $hire_date = $_POST['hire_date'];
+
+    // Get current image
+    $stmt = $conn->prepare("SELECT profile_image FROM employees WHERE id=?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $employee = $stmt->get_result()->fetch_assoc();
+
+    $profile_image = $employee['profile_image'];
+
+    // Upload new image if selected
+    if (!empty($_FILES['profile_image']['name'])) {
+
+        $upload_dir = "uploads/employees/";
+
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
+
+        $filename = time() . "_" . basename($_FILES['profile_image']['name']);
+
+        $target = $upload_dir . $filename;
+
+        if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target)) {
+
+            // Delete old image
+            if (!empty($profile_image) && file_exists($profile_image)) {
+                unlink($profile_image);
+            }
+
+            $profile_image = $target;
+        }
+    }
+
+    $sql = "UPDATE employees SET
+            first_name=?,
+            last_name=?,
+            email=?,
+            phone=?,
+            department_id=?,
+            designation_id=?,
+            hire_date=?,
+            salary=?,
+            profile_image=?
+            WHERE id=?";
+
+    $stmt = $conn->prepare($sql);
+
+    $stmt->bind_param(
+        "ssssiidssi",
+        $first_name,
+        $last_name,
+        $email,
+        $phone,
+        $department_id,
+        $designation_id,
+        $hire_date,
+        $salary,
+        $profile_image,
+        $id
+    );
+
+    if ($stmt->execute()) {
+
+        header("Location: index.php?updated=1");
+        exit();
+
+    } else {
+
+        die($stmt->error);
+
+    }
+
 }
 
 $id = $_GET['id'];
