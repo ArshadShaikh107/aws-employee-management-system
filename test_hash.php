@@ -1,11 +1,14 @@
 <?php
 
-$hash = '$2y$10$k5OCpekAVWKR1SdIgua1GevleJlr76RycIjKPc4NfvLWc6RUvL47a';
+require_once "config/db.php";
 
-echo "Hash Length: " . strlen($hash) . "<br><br>";
+$result = $conn->query("SELECT password FROM users WHERE username='admin'");
+$user = $result->fetch_assoc();
 
-if(password_verify("Admin@123", $hash)){
-    echo "Password Match";
-}else{
-    echo "Password Does NOT Match";
+echo "Hash from DB: " . $user['password'] . "<br><br>";
+
+if (password_verify("Admin@123", $user['password'])) {
+    echo "PASSWORD MATCH";
+} else {
+    echo "PASSWORD DOES NOT MATCH";
 }
