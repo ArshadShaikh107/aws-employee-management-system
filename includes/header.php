@@ -1,105 +1,99 @@
-body{
+<!DOCTYPE html>
+<html lang="en">
 
-    background:#f4f7fb;
+<head>
 
-    font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-}
+<title>Employee Management System</title>
 
-.sidebar{
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    position:fixed;
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    width:250px;
+<link rel="stylesheet"
+href="/employee-management/assets/css/style.css">
 
-    height:100vh;
+</head>
 
-    background:#1e293b;
+<body>
 
-    color:white;
+<div class="sidebar">
 
-    left:0;
+    <h4>
+        <i class="bi bi-building"></i>
+        EMS
+    </h4>
 
-    top:0;
+    <a href="/employee-management/dashboard.php">
+        <i class="bi bi-speedometer2"></i>
+        Dashboard
+    </a>
 
-    padding-top:20px;
+    <a href="/employee-management/index.php">
+        <i class="bi bi-people-fill"></i>
+        Employees
+    </a>
 
-}
+    <a href="#">
+        <i class="bi bi-diagram-3-fill"></i>
+        Departments
+    </a>
 
-.sidebar h4{
+    <a href="#">
+        <i class="bi bi-briefcase-fill"></i>
+        Designations
+    </a>
 
-    text-align:center;
+    <a href="#">
+        <i class="bi bi-graph-up-arrow"></i>
+        Reports
+    </a>
 
-    margin-bottom:30px;
+    <a href="#">
+        <i class="bi bi-gear-fill"></i>
+        Settings
+    </a>
 
-    font-weight:bold;
+    <a href="/employee-management/logout.php">
+        <i class="bi bi-box-arrow-right"></i>
+        Logout
+    </a>
 
-}
+</div>
 
-.sidebar a{
+<div class="main-content">
 
-    display:block;
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-    color:white;
+<div>
 
-    text-decoration:none;
+<h2 class="fw-bold">
 
-    padding:14px 25px;
+Employee Management System
 
-    transition:.3s;
+</h2>
 
-}
+<p class="text-muted">
 
-.sidebar a:hover{
+AWS Cloud Project
 
-    background:#334155;
+</p>
 
-}
+</div>
 
-.main-content{
+<div>
 
-    margin-left:250px;
+<span class="badge bg-primary fs-6">
 
-    padding:30px;
+<i class="bi bi-person-circle"></i>
 
-}
+<?php echo $_SESSION['fullname']; ?>
 
-.card{
+</span>
 
-    border:none;
+</div>
 
-    border-radius:15px;
-
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
-
-}
-
-.card-icon{
-
-    font-size:40px;
-
-    color:#0d6efd;
-
-}
-
-.table{
-
-    background:white;
-
-    border-radius:12px;
-
-    overflow:hidden;
-
-}
-
-.btn{
-
-    border-radius:8px;
-
-}
-
-.nav-user{
-
-    float:right;
-
-}
+</div>
