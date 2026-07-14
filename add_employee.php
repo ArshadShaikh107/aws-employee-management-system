@@ -24,23 +24,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Upload Image
     if (!empty($_FILES['profile_image']['name'])) {
 
-        $upload_dir = "uploads/employees/";
+    try {
 
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
-        }
+        $profile_image = uploadToS3($_FILES['profile_image']);
 
-        $file_name = time() . "_" . basename($_FILES["profile_image"]["name"]);
+    } catch (Exception $e) {
 
-        $target_file = $upload_dir . $file_name;
-
-        if (move_uploaded_file($_FILES["profile_image"]["tmp_name"], $target_file)) {
-
-            $profile_image = $target_file;
-
-        }
+        die("S3 Upload Failed: " . $e->getMessage());
 
     }
+
+}
 
     $sql = "INSERT INTO employees
     (
@@ -84,6 +78,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 }
+
+require_once "helpers/s3_upload.php";
+
 $departments = $conn->query("SELECT * FROM departments ORDER BY department_name");
 
 $designations = $conn->query("SELECT * FROM designations ORDER BY designation_name");
