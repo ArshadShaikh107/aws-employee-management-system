@@ -1,68 +1,105 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+body{
 
-<div class="container">
+    background:#f4f7fb;
 
-<a class="navbar-brand" href="../dashboard.php">
+    font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
 
-Employee Management
+}
 
-</a>
+.sidebar{
 
-<button class="navbar-toggler"
-type="button"
-data-bs-toggle="collapse"
-data-bs-target="#navbarNav">
+    position:fixed;
 
-<span class="navbar-toggler-icon"></span>
+    width:250px;
 
-</button>
+    height:100vh;
 
-<div class="collapse navbar-collapse" id="navbarNav">
+    background:#1e293b;
 
-<ul class="navbar-nav me-auto">
+    color:white;
 
-<li class="nav-item">
+    left:0;
 
-<a class="nav-link"
-href="/employee-management/dashboard.php">
+    top:0;
 
-Dashboard
+    padding-top:20px;
 
-</a>
+}
 
-</li>
+.sidebar h4{
 
-<li class="nav-item">
+    text-align:center;
 
-<a class="nav-link"
-href="/employee-management/index.php">
-Employees
+    margin-bottom:30px;
 
-</a>
+    font-weight:bold;
 
-</li>
+}
 
-</ul>
+.sidebar a{
 
-<span class="text-white me-3">
+    display:block;
 
-Welcome,
-<?php echo $_SESSION['fullname']; ?>
+    color:white;
 
-</span>
+    text-decoration:none;
 
-<a
-href="/employee-management/logout.php"
-class="btn btn-danger">
+    padding:14px 25px;
 
-Logout
+    transition:.3s;
 
-</a>
+}
 
-</div>
+.sidebar a:hover{
 
-</div>
+    background:#334155;
 
-</nav>
+}
 
-<div class="container mt-4">
+.main-content{
+
+    margin-left:250px;
+
+    padding:30px;
+
+}
+
+.card{
+
+    border:none;
+
+    border-radius:15px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.card-icon{
+
+    font-size:40px;
+
+    color:#0d6efd;
+
+}
+
+.table{
+
+    background:white;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+}
+
+.btn{
+
+    border-radius:8px;
+
+}
+
+.nav-user{
+
+    float:right;
+
+}

@@ -2,203 +2,256 @@
 
 session_start();
 
-if(!isset($_SESSION['user_id'])){
+if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
 require_once "config/db.php";
 
-include "includes/header.php";
+// Dashboard Statistics
+$employeeCount = $conn->query("SELECT COUNT(*) AS total FROM employees")->fetch_assoc()['total'];
 
-$employeeCount=$conn->query("SELECT COUNT(*) total FROM employees")->fetch_assoc()['total'];
+$departmentCount = $conn->query("SELECT COUNT(*) AS total FROM departments")->fetch_assoc()['total'];
 
-$departmentCount=$conn->query("SELECT COUNT(*) total FROM departments")->fetch_assoc()['total'];
+$designationCount = $conn->query("SELECT COUNT(*) AS total FROM designations")->fetch_assoc()['total'];
 
-$designationCount=$conn->query("SELECT COUNT(*) total FROM designations")->fetch_assoc()['total'];
-
-$recentEmployees=$conn->query("
-
+// Recent Employees
+$recentEmployees = $conn->query("
 SELECT
-
-e.first_name,
-e.last_name,
-
-d.department_name,
-
-g.designation_name,
-
-e.salary,
-
-e.hire_date
+    e.first_name,
+    e.last_name,
+    d.department_name,
+    g.designation_name,
+    e.salary,
+    e.hire_date
 
 FROM employees e
 
 JOIN departments d
-ON e.department_id=d.id
+ON e.department_id = d.id
 
 JOIN designations g
-ON e.designation_id=g.id
+ON e.designation_id = g.id
 
 ORDER BY e.id DESC
 
 LIMIT 5
-
 ");
 
+include "includes/header.php";
+
 ?>
+
+<!-- Statistics Cards -->
 
 <div class="row">
 
-<div class="col-md-4">
+    <!-- Employees -->
 
-<div class="card text-center shadow">
+    <div class="col-lg-4 col-md-6 mb-4">
 
-<div class="card-body">
+        <div class="card dashboard-card">
 
-<h5>Total Employees</h5>
+            <div class="card-body d-flex justify-content-between align-items-center">
 
-<h1>
+                <div>
 
-<?php echo $employeeCount; ?>
+                    <h6 class="text-muted">Total Employees</h6>
 
-</h1>
+                    <h2><?php echo $employeeCount; ?></h2>
+
+                </div>
+
+                <div>
+
+                    <i class="bi bi-people-fill stat-icon"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Departments -->
+
+    <div class="col-lg-4 col-md-6 mb-4">
+
+        <div class="card dashboard-card">
+
+            <div class="card-body d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h6 class="text-muted">Departments</h6>
+
+                    <h2><?php echo $departmentCount; ?></h2>
+
+                </div>
+
+                <div>
+
+                    <i class="bi bi-diagram-3-fill stat-icon text-success"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Designations -->
+
+    <div class="col-lg-4 col-md-6 mb-4">
+
+        <div class="card dashboard-card">
+
+            <div class="card-body d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h6 class="text-muted">Designations</h6>
+
+                    <h2><?php echo $designationCount; ?></h2>
+
+                </div>
+
+                <div>
+
+                    <i class="bi bi-briefcase-fill stat-icon text-warning"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
-</div>
+<!-- Recent Employees -->
 
-</div>
+<div class="card shadow">
 
-<div class="col-md-4">
+    <div class="card-header bg-white">
 
-<div class="card text-center shadow">
+        <h5 class="mb-0">
 
-<div class="card-body">
+            <i class="bi bi-clock-history"></i>
 
-<h5>Departments</h5>
+            Recent Employees
 
-<h1>
+        </h5>
 
-<?php echo $departmentCount; ?>
+    </div>
 
-</h1>
+    <div class="card-body">
 
-</div>
+        <div class="table-responsive">
 
-</div>
+            <table class="table table-hover align-middle">
 
-</div>
+                <thead class="table-dark">
 
-<div class="col-md-4">
+                    <tr>
 
-<div class="card text-center shadow">
+                        <th>Name</th>
 
-<div class="card-body">
+                        <th>Department</th>
 
-<h5>Designations</h5>
+                        <th>Designation</th>
 
-<h1>
+                        <th>Salary</th>
 
-<?php echo $designationCount; ?>
+                        <th>Hire Date</th>
 
-</h1>
+                    </tr>
 
-</div>
+                </thead>
 
-</div>
+                <tbody>
 
-</div>
+                <?php
 
-</div>
+                if ($recentEmployees->num_rows > 0) {
 
-<div class="card shadow mt-4">
+                    while ($row = $recentEmployees->fetch_assoc()) {
 
-<div class="card-header">
+                ?>
 
-Recent Employees
+                    <tr>
 
-</div>
+                        <td>
 
-<div class="card-body">
+                            <?php echo htmlspecialchars($row['first_name'] . " " . $row['last_name']); ?>
 
-<table class="table table-bordered">
+                        </td>
 
-<thead>
+                        <td>
 
-<tr>
+                            <span class="badge bg-primary">
 
-<th>Name</th>
+                                <?php echo htmlspecialchars($row['department_name']); ?>
 
-<th>Department</th>
+                            </span>
 
-<th>Designation</th>
+                        </td>
 
-<th>Salary</th>
+                        <td>
 
-<th>Hire Date</th>
+                            <?php echo htmlspecialchars($row['designation_name']); ?>
 
-</tr>
+                        </td>
 
-</thead>
+                        <td>
 
-<tbody>
+                            ₹<?php echo number_format($row['salary'], 2); ?>
 
-<?php
+                        </td>
 
-while($row=$recentEmployees->fetch_assoc()){
+                        <td>
 
-?>
+                            <?php echo date("d M Y", strtotime($row['hire_date'])); ?>
 
-<tr>
+                        </td>
 
-<td>
+                    </tr>
 
-<?php
+                <?php
 
-echo $row['first_name']." ".$row['last_name'];
+                    }
 
-?>
+                } else {
 
-</td>
+                ?>
 
-<td>
+                    <tr>
 
-<?php echo $row['department_name']; ?>
+                        <td colspan="5" class="text-center">
 
-</td>
+                            No employees found.
 
-<td>
+                        </td>
 
-<?php echo $row['designation_name']; ?>
+                    </tr>
 
-</td>
+                <?php
 
-<td>
+                }
 
-₹<?php echo number_format($row['salary']); ?>
+                ?>
 
-</td>
+                </tbody>
 
-<td>
+            </table>
 
-<?php echo $row['hire_date']; ?>
+        </div>
 
-</td>
-
-</tr>
-
-<?php
-
-}
-
-?>
-
-</tbody>
-
-</table>
-
-</div>
+    </div>
 
 </div>
 
