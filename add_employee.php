@@ -8,6 +8,8 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require_once "config/db.php";
+require_once "helpers/s3_upload.php";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $first_name = trim($_POST['first_name']);
@@ -79,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 }
 
-require_once "helpers/s3_upload.php";
+
 
 $departments = $conn->query("SELECT * FROM departments ORDER BY department_name");
 
