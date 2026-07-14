@@ -69,6 +69,22 @@ $result = $conn->query($sql);
 
 <?php } ?>
 
+<?php if(isset($_GET['deleted'])){ ?>
+
+<div class="alert alert-danger alert-dismissible fade show">
+
+<strong>Success!</strong> Employee deleted successfully.
+
+<button
+type="button"
+class="btn-close"
+data-bs-dismiss="alert">
+</button>
+
+</div>
+
+<?php } ?>
+
 <?php if(isset($_GET['updated'])){ ?>
 
 <div class="alert alert-info alert-dismissible fade show">
