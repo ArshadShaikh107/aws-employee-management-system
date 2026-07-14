@@ -1,5 +1,5 @@
 <?php
+require_once "config/db.php";
 
-include 'config/db.php';
-
-echo "Database Connected Successfully!";
+echo "<h2>Database Connected Successfully ✅</h2>";
+?>
