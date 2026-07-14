@@ -8,7 +8,82 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require_once "config/db.php";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    $first_name = trim($_POST['first_name']);
+    $last_name = trim($_POST['last_name']);
+    $email = trim($_POST['email']);
+    $phone = trim($_POST['phone']);
+    $department_id = $_POST['department_id'];
+    $designation_id = $_POST['designation_id'];
+    $salary = $_POST['salary'];
+    $hire_date = $_POST['hire_date'];
+
+    $profile_image = "";
+
+    // Upload Image
+    if (!empty($_FILES['profile_image']['name'])) {
+
+        $upload_dir = "uploads/employees/";
+
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
+
+        $file_name = time() . "_" . basename($_FILES["profile_image"]["name"]);
+
+        $target_file = $upload_dir . $file_name;
+
+        if (move_uploaded_file($_FILES["profile_image"]["tmp_name"], $target_file)) {
+
+            $profile_image = $target_file;
+
+        }
+
+    }
+
+    $sql = "INSERT INTO employees
+    (
+        first_name,
+        last_name,
+        email,
+        phone,
+        department_id,
+        designation_id,
+        hire_date,
+        salary,
+        profile_image
+    )
+    VALUES
+    (?,?,?,?,?,?,?,?,?)";
+
+    $stmt = $conn->prepare($sql);
+
+    $stmt->bind_param(
+        "ssssiidss",
+        $first_name,
+        $last_name,
+        $email,
+        $phone,
+        $department_id,
+        $designation_id,
+        $hire_date,
+        $salary,
+        $profile_image
+    );
+
+    if ($stmt->execute()) {
+
+        header("Location: index.php?success=1");
+        exit();
+
+    } else {
+
+        echo "<div class='alert alert-danger'>".$stmt->error."</div>";
+
+    }
+
+}
 $departments = $conn->query("SELECT * FROM departments ORDER BY department_name");
 
 $designations = $conn->query("SELECT * FROM designations ORDER BY designation_name");
