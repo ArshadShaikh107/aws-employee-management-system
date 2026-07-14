@@ -1,7 +1,5 @@
 <?php
 
-$password = "Admin@123";
-
-echo password_hash($password, PASSWORD_DEFAULT);
+echo password_hash("Admin@123", PASSWORD_DEFAULT);
 
 ?>
