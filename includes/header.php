@@ -35,8 +35,7 @@ Dashboard
 <li class="nav-item">
 
 <a class="nav-link"
-href="/employee-management/employees/index.php">
-
+href="/employee-management/index.php">
 Employees
 
 </a>
