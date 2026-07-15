@@ -8,6 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require_once "config/db.php";
+require_once "helpers/s3_upload.php";
 include "includes/header.php";
 
 // Fetch Employees
@@ -156,7 +157,7 @@ $result = $conn->query($sql);
                             <?php if(!empty($row['profile_image'])){ ?>
 
                                 <img
-                                    src="<?= htmlspecialchars($row['profile_image']); ?>"
+                                    src="<?= htmlspecialchars(getS3ImageUrl($row['profile_image'])); ?>"
                                     width="50"
                                     height="50"
                                     class="rounded-circle border"

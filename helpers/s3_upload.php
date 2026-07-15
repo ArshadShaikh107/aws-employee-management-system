@@ -27,3 +27,33 @@ function uploadToS3($file)
 
     return $result['ObjectURL'];
 }
+function getS3ImageUrl($imageUrl)
+{
+    if (empty($imageUrl)) {
+        return "";
+    }
+
+    $bucket = "ems-images-arshad107";
+    $region = "ap-south-1";
+
+    $s3 = new Aws\S3\S3Client([
+        'version' => 'latest',
+        'region'  => $region
+    ]);
+
+    // Convert full URL to object key
+    $key = str_replace(
+        "https://{$bucket}.s3.{$region}.amazonaws.com/",
+        "",
+        $imageUrl
+    );
+
+    $cmd = $s3->getCommand('GetObject', [
+        'Bucket' => $bucket,
+        'Key'    => $key
+    ]);
+
+    $request = $s3->createPresignedRequest($cmd, '+15 minutes');
+
+    return (string)$request->getUri();
+}
