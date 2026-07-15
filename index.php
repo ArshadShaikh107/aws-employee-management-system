@@ -24,9 +24,9 @@ SELECT
     g.designation_name
 FROM employees e
 JOIN departments d
-    ON e.department_id = d.id
+ON e.department_id = d.id
 JOIN designations g
-    ON e.designation_id = g.id
+ON e.designation_id = g.id
 ORDER BY e.id DESC
 ";
 
@@ -69,33 +69,33 @@ $result = $conn->query($sql);
 
 <?php } ?>
 
-<?php if(isset($_GET['deleted'])){ ?>
+<?php if(isset($_GET['updated'])){ ?>
 
-<div class="alert alert-danger alert-dismissible fade show">
+<div class="alert alert-info alert-dismissible fade show">
 
-<strong>Success!</strong> Employee deleted successfully.
+    <strong>Success!</strong> Employee updated successfully.
 
-<button
-type="button"
-class="btn-close"
-data-bs-dismiss="alert">
-</button>
+    <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert">
+    </button>
 
 </div>
 
 <?php } ?>
 
-<?php if(isset($_GET['updated'])){ ?>
+<?php if(isset($_GET['deleted'])){ ?>
 
-<div class="alert alert-info alert-dismissible fade show">
+<div class="alert alert-danger alert-dismissible fade show">
 
-<strong>Success!</strong> Employee updated successfully.
+    <strong>Success!</strong> Employee deleted successfully.
 
-<button
-type="button"
-class="btn-close"
-data-bs-dismiss="alert">
-</button>
+    <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert">
+    </button>
 
 </div>
 
@@ -143,69 +143,43 @@ data-bs-dismiss="alert">
 
                 <tbody>
 
-                <?php
+                <?php if($result && $result->num_rows > 0){ ?>
 
-                if($result->num_rows > 0){
-
-                    while($row = $result->fetch_assoc()){
-
-                ?>
+                    <?php while($row = $result->fetch_assoc()){ ?>
 
                     <tr>
 
-                        <td>
-                            <?= $row['id']; ?>
-                        </td>
+                        <td><?= $row['id']; ?></td>
 
                         <td>
 
-                        <?php if (!empty($row['profile_image'])) { ?>
+                            <?php if(!empty($row['profile_image'])){ ?>
 
-<img
-src="<?= htmlspecialchars($row['profile_image']); ?>"
-width="50"
-height="50"
-class="rounded-circle border"
-style="object-fit:cover;">
+                                <img
+                                    src="<?= htmlspecialchars($row['profile_image']); ?>"
+                                    width="50"
+                                    height="50"
+                                    class="rounded-circle border"
+                                    style="object-fit:cover;">
 
-<?php } else { ?>
+                            <?php } else { ?>
 
-<i class="bi bi-person-circle fs-2 text-secondary"></i>
+                                <i class="bi bi-person-circle fs-2 text-secondary"></i>
 
-<?php } ?>
-
-                        <?php
-
-                        }else{
-
-                        ?>
-
-                        <i class="bi bi-person-circle fs-1 text-secondary"></i>
-
-                        <?php
-
-                        }
-
-                        ?>
+                            <?php } ?>
 
                         </td>
 
                         <td>
-
-                            <?= htmlspecialchars($row['first_name']." ".$row['last_name']); ?>
-
+                            <?= htmlspecialchars($row['first_name'] . " " . $row['last_name']); ?>
                         </td>
 
                         <td>
-
                             <?= htmlspecialchars($row['email']); ?>
-
                         </td>
 
                         <td>
-
                             <?= htmlspecialchars($row['phone']); ?>
-
                         </td>
 
                         <td>
@@ -226,7 +200,7 @@ style="object-fit:cover;">
 
                         <td>
 
-                            ₹<?= number_format($row['salary'],2); ?>
+                            ₹<?= number_format($row['salary'], 2); ?>
 
                         </td>
 
@@ -261,13 +235,9 @@ style="object-fit:cover;">
 
                     </tr>
 
-                <?php
+                    <?php } ?>
 
-                    }
-
-                }else{
-
-                ?>
+                <?php } else { ?>
 
                     <tr>
 
@@ -279,11 +249,7 @@ style="object-fit:cover;">
 
                     </tr>
 
-                <?php
-
-                }
-
-                ?>
+                <?php } ?>
 
                 </tbody>
 
