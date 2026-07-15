@@ -57,3 +57,36 @@ function getS3ImageUrl($imageUrl)
 
     return (string)$request->getUri();
 }
+function deleteFromS3($imageUrl)
+{
+    if (empty($imageUrl)) {
+        return;
+    }
+
+    $bucket = "ems-images-arshad107";
+    $region = "ap-south-1";
+
+    $s3 = new Aws\S3\S3Client([
+        'version' => 'latest',
+        'region'  => $region
+    ]);
+
+    $key = str_replace(
+        "https://{$bucket}.s3.{$region}.amazonaws.com/",
+        "",
+        $imageUrl
+    );
+
+    try {
+
+        $s3->deleteObject([
+            'Bucket' => $bucket,
+            'Key'    => $key
+        ]);
+
+    } catch (Exception $e) {
+
+        // Ignore if object doesn't exist
+
+    }
+}

@@ -8,6 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require_once "config/db.php";
+require_once "helpers/s3_upload.php";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -30,29 +31,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $profile_image = $employee['profile_image'];
 
-    // Upload new image if selected
-    if (!empty($_FILES['profile_image']['name'])) {
+    // Upload new image to S3
+if (!empty($_FILES['profile_image']['name'])) {
 
-        $upload_dir = "uploads/employees/";
+    try {
 
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
+        // Delete previous image from S3
+        if (!empty($profile_image)) {
+            deleteFromS3($profile_image);
         }
 
-        $filename = time() . "_" . basename($_FILES['profile_image']['name']);
+        // Upload new image
+        $profile_image = uploadToS3($_FILES['profile_image']);
 
-        $target = $upload_dir . $filename;
+    } catch (Exception $e) {
 
-        if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target)) {
+        die("S3 Upload Failed: " . $e->getMessage());
 
-            // Delete old image
-            if (!empty($profile_image) && file_exists($profile_image)) {
-                unlink($profile_image);
-            }
-
-            $profile_image = $target;
-        }
     }
+
+}
 
     $sql = "UPDATE employees SET
             first_name=?,
@@ -278,7 +276,7 @@ value="<?= $employee['hire_date']; ?>">
 <?php if(!empty($employee['profile_image'])){ ?>
 
 <img
-src="<?= htmlspecialchars($employee['profile_image']); ?>"
+src="<?= htmlspecialchars(getS3ImageUrl($employee['profile_image'])); ?>"
 width="120"
 class="img-thumbnail mb-2">
 
