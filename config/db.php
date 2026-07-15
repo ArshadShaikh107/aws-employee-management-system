@@ -1,16 +1,40 @@
 <?php
 
-$host = "employee-db1.ch8qyagi69r7.ap-south-1.rds.amazonaws.com";
-$username = "admin";
-$password = "Arshad107";
-$database = "employee_management";
+require_once __DIR__ . '/../vendor/autoload.php';
 
-$conn = new mysqli($host, $username, $password, $database);
+use Aws\SecretsManager\SecretsManagerClient;
 
-if ($conn->connect_error) {
-    die("Connection Failed: " . $conn->connect_error);
+try {
+
+    $client = new SecretsManagerClient([
+        'version' => 'latest',
+        'region'  => 'ap-south-1'
+    ]);
+
+    $result = $client->getSecretValue([
+        'SecretId' => 'employee-management-db'
+    ]);
+
+    $secret = json_decode($result['SecretString'], true);
+
+    $host = $secret['host'];
+    $username = $secret['username'];
+    $password = $secret['password'];
+    $database = $secret['dbname'];
+
+    $conn = new mysqli(
+        $host,
+        $username,
+        $password,
+        $database
+    );
+
+    if ($conn->connect_error) {
+        die("Database Connection Failed: " . $conn->connect_error);
+    }
+
+} catch (Exception $e) {
+
+    die("Secrets Manager Error: " . $e->getMessage());
+
 }
-
-
-
-?>
