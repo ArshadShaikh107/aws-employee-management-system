@@ -159,19 +159,13 @@ data-bs-dismiss="alert">
 
                         <td>
 
-                        <?php
-
-                        if(!empty($row['profile_image'])){
-
-                        ?>
-
-                       <?php if (!empty($row['profile_image'])) { ?>
+                        <?php if (!empty($row['profile_image'])) { ?>
 
 <img
 src="<?= htmlspecialchars($row['profile_image']); ?>"
-width="45"
-height="45"
-class="rounded-circle"
+width="50"
+height="50"
+class="rounded-circle border"
 style="object-fit:cover;">
 
 <?php } else { ?>
