@@ -9,6 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 require_once "config/db.php";
 require_once "helpers/s3_upload.php";
+require_once "helpers/sns_notify.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -69,6 +70,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     );
 
     if ($stmt->execute()) {
+
+    // Get Department Name
+$dept = $conn->query(
+    "SELECT department_name
+     FROM departments
+     WHERE id=$department_id"
+)->fetch_assoc();
+
+// Get Designation Name
+$desg = $conn->query(
+    "SELECT designation_name
+     FROM designations
+     WHERE id=$designation_id"
+)->fetch_assoc();
+
+sendEmployeeNotification(
+
+    $first_name,
+
+    $last_name,
+
+    $dept['department_name'],
+
+    $desg['designation_name']
+
+);
 
         header("Location: index.php?success=1");
         exit();
