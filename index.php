@@ -165,12 +165,20 @@ data-bs-dismiss="alert">
 
                         ?>
 
-                        <img
-                            src="<?= htmlspecialchars($row['profile_image']); ?>"
-                            width="50"
-                            height="50"
-                            class="rounded-circle border"
-                            style="object-fit:cover;">
+                       <?php if (!empty($row['profile_image'])) { ?>
+
+<img
+src="<?= htmlspecialchars($row['profile_image']); ?>"
+width="45"
+height="45"
+class="rounded-circle"
+style="object-fit:cover;">
+
+<?php } else { ?>
+
+<i class="bi bi-person-circle fs-2 text-secondary"></i>
+
+<?php } ?>
 
                         <?php
 
