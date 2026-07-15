@@ -8,6 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require_once "config/db.php";
+require_once "helpers/s3_upload.php";
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("Location: index.php");
@@ -18,26 +19,28 @@ $id = $_GET['id'];
 
 $sql = "
 SELECT
-e.*,
-d.department_name,
-g.designation_name
+    e.*,
+    d.department_name,
+    g.designation_name
 FROM employees e
-JOIN departments d ON e.department_id=d.id
-JOIN designations g ON e.designation_id=g.id
-WHERE e.id=?
+JOIN departments d
+    ON e.department_id = d.id
+JOIN designations g
+    ON e.designation_id = g.id
+WHERE e.id = ?
 ";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i",$id);
+$stmt->bind_param("i", $id);
 $stmt->execute();
 
-$result=$stmt->get_result();
+$result = $stmt->get_result();
 
-if($result->num_rows==0){
+if ($result->num_rows == 0) {
     die("Employee not found.");
 }
 
-$employee=$result->fetch_assoc();
+$employee = $result->fetch_assoc();
 
 include "includes/header.php";
 
@@ -45,119 +48,106 @@ include "includes/header.php";
 
 <div class="card shadow">
 
-<div class="card-header bg-primary text-white">
+    <div class="card-header bg-primary text-white">
 
-<h3>
+        <h3>
+            <i class="bi bi-person-vcard-fill"></i>
+            Employee Details
+        </h3>
 
-Employee Details
+    </div>
 
-</h3>
+    <div class="card-body">
 
-</div>
+        <div class="row">
 
-<div class="card-body">
+            <div class="col-md-3 text-center">
 
-<div class="row">
+                <?php if (!empty($employee['profile_image'])) { ?>
 
-<div class="col-md-3 text-center">
+                    <img
+                        src="<?= htmlspecialchars(getS3ImageUrl($employee['profile_image'])) ?>"
+                        class="img-fluid rounded-circle border shadow"
+                        style="width:180px;height:180px;object-fit:cover;">
 
-<?php
+                <?php } else { ?>
 
-if(!empty($employee['profile_image'])){
+                    <i class="bi bi-person-circle"
+                       style="font-size:170px;color:gray;"></i>
 
-?>
+                <?php } ?>
 
-<img
-src="<?= htmlspecialchars($employee['profile_image']) ?>"
-class="img-fluid rounded-circle border"
-style="width:180px;height:180px;object-fit:cover;">
+            </div>
 
-<?php
+            <div class="col-md-9">
 
-}else{
+                <table class="table table-bordered">
 
-?>
+                    <tr>
+                        <th width="220">Name</th>
+                        <td><?= htmlspecialchars($employee['first_name'] . " " . $employee['last_name']) ?></td>
+                    </tr>
 
-<i class="bi bi-person-circle"
-style="font-size:170px;color:gray;"></i>
+                    <tr>
+                        <th>Email</th>
+                        <td><?= htmlspecialchars($employee['email']) ?></td>
+                    </tr>
 
-<?php
+                    <tr>
+                        <th>Phone</th>
+                        <td><?= htmlspecialchars($employee['phone']) ?></td>
+                    </tr>
 
-}
+                    <tr>
+                        <th>Department</th>
+                        <td><?= htmlspecialchars($employee['department_name']) ?></td>
+                    </tr>
 
-?>
+                    <tr>
+                        <th>Designation</th>
+                        <td><?= htmlspecialchars($employee['designation_name']) ?></td>
+                    </tr>
 
-</div>
+                    <tr>
+                        <th>Salary</th>
+                        <td>₹<?= number_format($employee['salary'], 2) ?></td>
+                    </tr>
 
-<div class="col-md-9">
+                    <tr>
+                        <th>Hire Date</th>
+                        <td><?= date("d M Y", strtotime($employee['hire_date'])) ?></td>
+                    </tr>
 
-<table class="table">
+                    <tr>
+                        <th>Created At</th>
+                        <td><?= date("d M Y H:i", strtotime($employee['created_at'])) ?></td>
+                    </tr>
 
-<tr>
-<th>Name</th>
-<td><?= htmlspecialchars($employee['first_name']." ".$employee['last_name']) ?></td>
-</tr>
+                </table>
 
-<tr>
-<th>Email</th>
-<td><?= htmlspecialchars($employee['email']) ?></td>
-</tr>
+                <a
+                    href="edit_employee.php?id=<?= $employee['id'] ?>"
+                    class="btn btn-warning">
 
-<tr>
-<th>Phone</th>
-<td><?= htmlspecialchars($employee['phone']) ?></td>
-</tr>
+                    <i class="bi bi-pencil"></i>
+                    Edit Employee
 
-<tr>
-<th>Department</th>
-<td><?= htmlspecialchars($employee['department_name']) ?></td>
-</tr>
+                </a>
 
-<tr>
-<th>Designation</th>
-<td><?= htmlspecialchars($employee['designation_name']) ?></td>
-</tr>
+                <a
+                    href="index.php"
+                    class="btn btn-secondary">
 
-<tr>
-<th>Salary</th>
-<td>₹<?= number_format($employee['salary'],2) ?></td>
-</tr>
+                    <i class="bi bi-arrow-left"></i>
+                    Back
 
-<tr>
-<th>Hire Date</th>
-<td><?= date("d M Y",strtotime($employee['hire_date'])) ?></td>
-</tr>
+                </a>
 
-<tr>
-<th>Created At</th>
-<td><?= date("d M Y H:i",strtotime($employee['created_at'])) ?></td>
-</tr>
+            </div>
 
-</table>
+        </div>
 
-<a
-href="edit_employee.php?id=<?= $employee['id'] ?>"
-class="btn btn-warning">
-
-<i class="bi bi-pencil"></i>
-
-Edit Employee
-
-</a>
-
-<a
-href="index.php"
-class="btn btn-secondary">
-
-Back
-
-</a>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </div>
 
