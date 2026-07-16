@@ -205,25 +205,25 @@ This project is designed with high availability in mind.
 
 ### Dashboard
 
-[Dashboard](screenshots/dashboard.png)
+![Dashboard](screenshots/dashboard.png)
 
 ---
 
 ### Employee List
 
-[Employee List](screenshots/employee-list.png)
+![Employee List](screenshots/employee-list.png)
 
 ---
 
 ### Add Employee
 
-[Add Employee](screenshots/add-employee.png)
+![Add Employee](screenshots/add-employee.png)
 
 ---
 
 ### Edit Employee
 
-[Edit Employee](screenshots/edit-employee.png)
+![Edit Employee](screenshots/edit-employee.png)
 
 ## AWS Infrastructure
 
