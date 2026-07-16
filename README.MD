@@ -1,3 +1,24 @@
+
+
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [AWS Services Used](#aws-services-used)
+- [Project Architecture](#project-architecture)
+- [Project Workflow](#project-workflow)
+- [Project Structure](#project-structure)
+- [Technologies Used](#technologies-used)
+- [Security Features](#security-features)
+- [High Availability](#high-availability)
+- [Application Screenshots](#application-screenshots)
+- [AWS Infrastructure](#aws-infrastructure)
+- [Deployment Guide](#deployment-guide)
+- [Skills Demonstrated](#skills-demonstrated)
+- [Future Improvements](#future-improvements)
+- [Author](#author)
+
+
 # AWS Employee Management System
 
 A cloud-based Employee Management System deployed on **Amazon Web Services (AWS)** using a highly available and scalable architecture. The application is built with **PHP** and **MySQL**, hosted on **Amazon EC2**, connected to **Amazon RDS**, secured with **AWS Secrets Manager**, monitored using **Amazon CloudWatch**, and deployed behind an **Application Load Balancer (ALB)** with **Auto Scaling**.
@@ -171,3 +192,159 @@ This project is designed with high availability in mind.
 - CloudWatch monitors infrastructure metrics.
 - SNS sends notifications for Auto Scaling events.
 - Amazon RDS provides a managed relational database service for persistent storage.
+
+
+
+## Application Screenshots
+
+### Login Page
+
+[Login Page](screenshots/login-page.png)
+
+---
+
+### Dashboard
+
+[Dashboard](screenshots/dashboard.png)
+
+---
+
+### Employee List
+
+[Employee List](screenshots/employee-list.png)
+
+---
+
+### Add Employee
+
+[Add Employee](screenshots/add-employee.png)
+
+---
+
+### Edit Employee
+
+[Edit Employee](screenshots/edit-employee.png)
+
+## AWS Infrastructure
+
+### Amazon VPC
+
+![VPC](screenshots/vpc.png)
+
+---
+
+### Amazon EC2
+
+![EC2](screenshots/ec2.png)
+
+---
+
+### Amazon RDS
+
+![RDS](screenshots/rds.png)
+
+---
+
+### Application Load Balancer
+
+![ALB](screenshots/alb.png)
+
+---
+
+### Target Group
+
+![Target Group](screenshots/target-group.png)
+
+---
+
+### Auto Scaling Group
+
+![ASG](screenshots/asg.png)
+
+---
+
+### CloudWatch Monitoring
+
+![CloudWatch](screenshots/cloudwatch.png)
+
+---
+
+### SNS Notifications
+
+![SNS](screenshots/sns.png)
+
+---
+
+### AWS Secrets Manager
+
+![Secrets Manager](screenshots/secrets-manager.png)
+
+## Deployment Guide
+
+### Prerequisites
+
+- AWS Account
+- Amazon EC2
+- Amazon RDS MySQL
+- IAM Role
+- AWS Secrets Manager
+- CloudWatch Agent
+- Application Load Balancer
+- Auto Scaling Group
+- Git
+- Composer
+- Apache2
+- PHP 8.3
+
+### Deployment Steps
+
+1. Launch an EC2 instance with Ubuntu.
+2. Install Apache, PHP, Composer, and Git.
+3. Clone the project repository.
+4. Configure the application.
+5. Create an Amazon RDS MySQL database.
+6. Store database credentials in AWS Secrets Manager.
+7. Attach an IAM Role to the EC2 instance.
+8. Configure the CloudWatch Agent.
+9. Create an Application Load Balancer.
+10. Create a Target Group.
+11. Create an AMI.
+12. Create a Launch Template.
+13. Configure an Auto Scaling Group.
+14. Verify application availability using the ALB DNS.
+
+## Skills Demonstrated
+
+- Amazon EC2 Management
+- Amazon RDS Administration
+- Virtual Private Cloud (VPC)
+- Security Groups
+- IAM Roles and Policies
+- AWS Secrets Manager
+- CloudWatch Metrics and Logs
+- Amazon SNS Notifications
+- Application Load Balancer
+- Auto Scaling
+- Apache Web Server Administration
+- PHP Application Deployment
+- MySQL Database Management
+- Linux Server Administration
+- Git & GitHub Version Control
+
+## Future Improvements
+
+- Enable HTTPS using AWS Certificate Manager (ACM)
+- Configure Route 53 with a custom domain
+- Implement CI/CD using AWS CodePipeline
+- Automate infrastructure provisioning with Terraform
+- Enhance monitoring with CloudWatch Dashboards and Alarms
+
+
+
+## Author
+
+**Arshad Mubarak Shaikh**
+
+- GitHub: https://github.com/ArshadShaikh107
+- LinkedIn: www.linkedin.com/in/arshadshaikh107
+
