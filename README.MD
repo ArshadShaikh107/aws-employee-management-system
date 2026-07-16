@@ -199,7 +199,7 @@ This project is designed with high availability in mind.
 
 ### Login Page
 
-[Login Page](screenshots/login-page.png)
+![Login Page](screenshots/login-page.png)
 
 ---
 
