@@ -3,18 +3,18 @@
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Employee Management System</title>
+    <title>Employee Management System</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<link rel="stylesheet"
-href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-<link rel="stylesheet"
-href="/employee-management/assets/css/style.css">
+    <link rel="stylesheet"
+        href="assets/css/style.css">
 
 </head>
 
@@ -27,12 +27,12 @@ href="/employee-management/assets/css/style.css">
         EMS
     </h4>
 
-    <a href="/employee-management/dashboard.php">
+    <a href="dashboard.php">
         <i class="bi bi-speedometer2"></i>
         Dashboard
     </a>
 
-    <a href="/employee-management/index.php">
+    <a href="index.php">
         <i class="bi bi-people-fill"></i>
         Employees
     </a>
@@ -57,7 +57,7 @@ href="/employee-management/assets/css/style.css">
         Settings
     </a>
 
-    <a href="/employee-management/logout.php">
+    <a href="logout.php">
         <i class="bi bi-box-arrow-right"></i>
         Logout
     </a>
@@ -66,34 +66,30 @@ href="/employee-management/assets/css/style.css">
 
 <div class="main-content">
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-<div>
+        <div>
 
-<h2 class="fw-bold">
+            <h2 class="fw-bold">
+                Employee Management System
+            </h2>
 
-Employee Management System
+            <p class="text-muted">
+                AWS Cloud Project
+            </p>
 
-</h2>
+        </div>
 
-<p class="text-muted">
+        <div>
 
-AWS Cloud Project
+            <span class="badge bg-primary fs-6">
 
-</p>
+                <i class="bi bi-person-circle"></i>
 
-</div>
+                <?php echo htmlspecialchars($_SESSION['fullname']); ?>
 
-<div>
+            </span>
 
-<span class="badge bg-primary fs-6">
+        </div>
 
-<i class="bi bi-person-circle"></i>
-
-<?php echo $_SESSION['fullname']; ?>
-
-</span>
-
-</div>
-
-</div>
+    </div>
